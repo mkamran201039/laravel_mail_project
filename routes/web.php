@@ -24,4 +24,26 @@ Route::get('/mail', function () {
 });
 
 
+Route::get('/create', function () {
+    return view('create');
+});
+
+
+Route::get('/read', function () {
+    return view('read');
+});
+
+
+Route::get('/update', function () {
+    return view('update');
+});
+
+
+Route::get('/delete', function () {
+    return view('delete');
+});
+
+
+
+
 Route::post('send/mail/data',[testController::class, 'send_mail_data'])->name('send.mail.data');

@@ -39,16 +39,15 @@ class sendMail extends Mailable
     {
         $mail = $this->subject("This is a test mail")->view('send');
 
-        // Attach file if attachment path is provided
+    
         if ($this->attachmentPath) {
             $mail->attach($this->attachmentPath);
         }
 
         return $mail;
     }
-    /**
-     * Get the message envelope.
-     */
+   
+
     public function envelope(): Envelope
     {
         return new Envelope(

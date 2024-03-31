@@ -4,51 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
+
+
     public function index()
     {
         return Product::all();
     }
 
+
+   
     public function store(Request $request)
     {
-        $product = Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'location' => $request->input('location')
-        ]);
-
-        return $product;
+        return $this->productService->createProduct($request); // using service pattern
     }
+
+
+
 
     public function show($id)
     {
         return Product::findOrFail($id);
     }
 
+
+    
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        
-        $product->update([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'location' => $request->input('location')
-        ]);
-        
-        return response("Product updated successfully", 200);
-        // return response()->json([
-        //     'message' => 'Product updated successfully',
-        //     'product' => $product
-        // ], Response::HTTP_OK);
+        return response()->json($this->productService->updateProduct($request, $id)); // using service patteern
     }
 
+  
+  
     public function destroy($id)
-    {   
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return response()->json(['message' => 'Product deleted successfully']);
+    {
+        return response()->json($this->productService->deleteProduct($id)); // usng service pattern
     }
+
+
 }

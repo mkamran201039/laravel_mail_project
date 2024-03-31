@@ -9,26 +9,45 @@ class ProductService
 {
     public function createProduct(Request $request)
     {
-        return Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'location' => $request->input('location')
-        ]);
+        try {
+            $product = Product::create([
+                'name' => $request->input('name'),
+                'price' => $request->input('price'),
+                'location' => $request->input('location')
+            ]);
+        
+    
+            return $product;
+        } catch (QueryException $e) {
+           
+            return response()->json(['error' => 'An error occurred while creating the product: ' . $e->getMessage()], 500);
+        }
     }
 
-    
+
 
     public function updateProduct(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        try {
+         
+            $product = Product::findOrFail($id);
         
-        $product->update([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'location' => $request->input('location')
-        ]);
-
-        return "Product updated successfully";
+          
+            $product->update([
+                'name' => $request->input('name'),
+                'price' => $request->input('price'),
+                'location' => $request->input('location')
+            ]);
+        
+     
+            return "Product updated successfully";
+        } catch (ModelNotFoundException $e) {
+     
+            return response()->json(['error' => 'Product not found.'], 404);
+        } catch (Exception $e) {
+         
+            return response()->json(['error' => 'An error occurred while updating the product: ' . $e->getMessage()], 500);
+        }
         
         // return response()->json([
         //     'message' => 'Product updated successfully',
@@ -39,13 +58,25 @@ class ProductService
 
 
 
+ 
     public function deleteProduct($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return "Product deleted successfully";
-        // You can also return a JSON response if needed
-        // return response()->json(['message' => 'Product deleted successfully']);
+        try {
+            
+            $product = Product::findOrFail($id);
+
+   
+            $product->delete();
+
+            return "Product deleted successfully";
+
+        } catch (ModelNotFoundException $e) {
+           
+            return response()->json(['error' => 'Product not found.'], 404);
+        } catch (Exception $e) {
+          
+            return response()->json(['error' => 'An error occurred while deleting the product: ' . $e->getMessage()], 500);
+        }
     }
 
 

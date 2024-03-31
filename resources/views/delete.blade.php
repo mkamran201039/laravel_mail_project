@@ -45,7 +45,7 @@
             box-sizing: border-box;
         }
         button[type="submit"] {
-            background-color: #007bff;
+            background-color: red;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -54,7 +54,7 @@
             transition: background-color 0.3s;
         }
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: red;
         }
     </style>
 </head>
